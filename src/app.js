@@ -1,5 +1,7 @@
-const app = (req, res) => {
-  res.statusCode = 404;
+const app = function (req, res) {
+  res.statusCode = 200;
+  console.log("one req came");
+  res.write("hi welcome to my page");
   res.end();
 };
 
