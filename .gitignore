@@ -1,2 +1,4 @@
 node_modules/
 definitions
+.DS_Store
+*/.DS_Store
