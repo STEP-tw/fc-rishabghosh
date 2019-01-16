@@ -15,9 +15,10 @@ const throwError = function (req, res, errorMessage) {
 const app = function (req, res) {
   const errorMessage = "Invalid request";
   let filePath = "." + req.url;
+
   
   if (req.url === "/") {
-    filePath = "." + req.url + "src/index.html";
+    filePath = "." + req.url + "src/home_page.html";
   }
 
   fs.readFile(filePath, function (error, data) {
