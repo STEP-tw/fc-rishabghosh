@@ -5,15 +5,14 @@
 
 .aside {
   font-size: 23px;
-	line-height: 40px;
-	
+  line-height: 40px;
   margin: 50px;
 }
 
-img {
+.main_img {
 	border: 1px solid black;
-	width: 60%;
-	height: 60%;
+  width: 60%;
+  height: 60%;
 }
 
 h1 {
