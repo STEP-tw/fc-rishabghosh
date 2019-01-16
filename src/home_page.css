@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  margin: 20px;
+}
+
+.aside {
+  font-size: 23px;
+	line-height: 40px;
+	
+  margin: 50px;
+}
+
+img {
+	border: 1px solid black;
+	width: 60%;
+	height: 60%;
+}
+
+h1 {
+  text-align: center;
+  color: #b77900;
+}
