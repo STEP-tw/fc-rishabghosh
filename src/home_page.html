@@ -2,32 +2,28 @@
 <html>
 
 <head>
-	<title>Flower Catalog</title>
-	<link rel="stylesheet" type="text/css" href="/src/home_page.css" />
+  <title>Flower Catalog</title>
+  <link rel="stylesheet" type="text/css" href="/src/home_page.css" />
+  <script src="src/homePageScript.js"> </script>
 </head>
 
 <body>
+  <h1>Flower Catalog</h1>
 
-	<h1>Flower Catalog</h1>
+  <div class="container">
+    <img src="src/images/freshorigins.jpg" alt="flowers" class="main_img" />
 
-	<div class="container">
+    <div class="aside">
+      <ul>
+        <li><a href=".">Abeliophyllum</a></li>
+        <li><a href=".">Ageratum</a></li>
+      </ul>
 
-		<img src="src/images/freshorigins.jpg" alt="flowers" class="main_img" />
+      <img src="src/images/animated-flower.gif" alt="jar" id="jar" onclick="hideForOneSec(document)" />
+      <p><a href=".">Guest Book</a></p>
+    </div>
 
-		<div class="aside">
-
-			<ul>
-				<li><a href=".">Abeliophyllum</a></li>
-				<li><a href=".">Ageratum</a></li>
-			</ul>
-
-			<img src="src/images/animated-flower.gif" alt="jar"/>
-
-			<p><a href=".">Guest Book</a></p>
-
-		</div>
-
-	</div>
+  </div>
 
 </body>
 

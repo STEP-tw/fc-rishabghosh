@@ -1,3 +1,6 @@
-*** how the website should look like
-    * Links to pages of Abeliophyllum, Ageratum and a guest book.
-    * A watering Jar image, which when clicked will hide for a second.
+*** app.js ***
+ * sendData and throwError can be one function -> send
+ * const errorMessage could be in constants.js file
+ * adding homepage inside if block should be its own function
+   - if(req.url=="/")filePath=getDefaultUrl()
+   - something like that

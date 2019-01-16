@@ -16,7 +16,7 @@ const app = function (req, res) {
   const errorMessage = "Invalid request";
   let filePath = "." + req.url;
 
-  
+
   if (req.url === "/") {
     filePath = "." + req.url + "src/home_page.html";
   }

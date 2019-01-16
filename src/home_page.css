@@ -10,9 +10,17 @@
 }
 
 .main_img {
-	border: 1px solid black;
+  border: 1px solid black;
   width: 60%;
   height: 60%;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.invisible {
+  visibility: hidden;
 }
 
 h1 {
