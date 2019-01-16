@@ -4,3 +4,8 @@
  * adding homepage inside if block should be its own function
    - if(req.url=="/")filePath=getDefaultUrl()
    - something like that
+
+*** homePageScript.js ***
+  * add click listner to listen to click and if id matches
+   - then call hideForOneSec
+   
