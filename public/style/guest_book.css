@@ -1,0 +1,35 @@
+h1 {
+  font-size: 40px;
+  text-align: center;
+  color: #b77900;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+form {
+  font-size: 25px;
+}
+
+input {
+  margin: 20px;
+  font-size: 20px;
+}
+
+.comment_box {
+  margin-left: 50px;
+  height: 100px;
+  width: 400px;
+}
+
+.name_box {
+  margin-left: 50px;
+  height: 30px;
+  margin-left: 90px;
+  width: 400px;
+}
+
+.submit {
+  margin-left: 350px;
+}

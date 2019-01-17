@@ -1,11 +1,11 @@
 *** app.js ***
  * sendData and throwError can be one function -> send
  * const errorMessage could be in constants.js file
- * adding homepage inside if block should be its own function
-   - if(req.url=="/")filePath=getDefaultUrl()
-   - something like that
 
-*** homePageScript.js ***
-  * add click listner to listen to click and if id matches
-   - then call hideForOneSec
-   
+ ***** features *****
+    *  Centred title at top
+    *  A link to go back to home page
+    *  Text fields to take name & a comment.
+    *  Submit button, which takes the comment
+    *  A list of comments by different guest until now with Date-time, Name and * *  Comment of each ordered with latest comment in reverse chronological order.
+
