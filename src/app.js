@@ -14,9 +14,8 @@ const throwError = function (req, res, errorMessage) {
 
 const app = function (req, res) {
   const errorMessage = "Invalid request";
-  const defaultFilePath = "./public/html/landing_page.html";
+  const defaultFilePath = "./public/index.html";
   let filePath = "./public" + req.url;
-
 
   if (req.url === "/") {
     filePath = defaultFilePath;
