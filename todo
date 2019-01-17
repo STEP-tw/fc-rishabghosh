@@ -9,3 +9,17 @@
     *  Submit button, which takes the comment
     *  A list of comments by different guest until now with Date-time, Name and * *  Comment of each ordered with latest comment in reverse chronological order.
 
+***** implimenting ******
+   *  the form data is send to same url -> guest/guest_book.html
+   *  req.on("data", callback) gives the data send to the server
+   *  parse the data to key value pair
+   *  the data(name, comment) is stored locally, to database
+   *  the database should not be public
+
+
+
+
+***** suggestions *****
+   * use labels instead of headings or paragraphs
+
+

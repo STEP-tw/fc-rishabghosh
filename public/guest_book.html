@@ -2,18 +2,33 @@
 <html>
 
 <head>
-	<title>Guest Book</title>
-	<link rel="stylesheet" type="text/css" href="	style/guest_book.css" />
+  <title>Guest Book</title>
+  <link rel="stylesheet" type="text/css" href="	style/guest_book.css" />
+
+  <script>
+    const showInput = function () {
+      const comments = document.getElementById("comments");
+      const nameBox = document.getElementById("name_box");
+      const commentBox = document.getElementById("comment_box");
+      comments.innerHTML = nameBox.value + "\n" + commentBox.value;
+    };
+  </script>
 </head>
 
 <body>
-	<h1>Guest Book</h1>
-	<h2>Leave a comment</h2>
-	<form method="POST" action="">
-		Name: <input name="name_1" class="name_box"><br>
-		Comment: <input name="comment_1" class="comment_box"><br>
-		<input type="submit" class="submit"><br>
-	</form>
+  <h1><a href="/">home</a>Guest Book</h1>
+  <h2>Leave a comment</h2>
+
+  <form method="POST" action="/guest_book.html">
+    Name: <input id="name_box" name="name_1"><br>
+    Comment: <input id="comment_box" name="comment_1"><br>
+    <input id="submit_button" type="submit" onclick="showInput()"><br>
+  </form>
+
+  <div id="comments">
+    datetime_name_comments_list
+  </div>
+
 </body>
 
 </html>

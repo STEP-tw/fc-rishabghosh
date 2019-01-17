@@ -17,19 +17,26 @@ input {
   font-size: 20px;
 }
 
-.comment_box {
+#comment_box {
   margin-left: 50px;
   height: 100px;
   width: 400px;
 }
 
-.name_box {
+#name_box {
   margin-left: 50px;
   height: 30px;
   margin-left: 90px;
   width: 400px;
 }
 
-.submit {
+#submit_button {
   margin-left: 350px;
+}
+
+#comments {
+  border-top: 1px solid black;
+  font-size: 25px;
+  position: relative;
+  padding: 20px;
 }
