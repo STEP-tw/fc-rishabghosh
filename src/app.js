@@ -14,11 +14,12 @@ const throwError = function (req, res, errorMessage) {
 
 const app = function (req, res) {
   const errorMessage = "Invalid request";
-  let filePath = "." + req.url;
+  const defaultFilePath = "./public/html/landing_page.html";
+  let filePath = "./public" + req.url;
 
 
   if (req.url === "/") {
-    filePath = "." + req.url + "src/home_page.html";
+    filePath = defaultFilePath;
   }
 
   fs.readFile(filePath, function (error, data) {
