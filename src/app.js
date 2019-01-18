@@ -1,4 +1,7 @@
 const fs = require("fs");
+const WebFramework = require("./handler.js");
+const webFramework = new WebFramework();
+
 
 const sendData = function (req, res, data) {
   res.statusCode = 200;
@@ -24,25 +27,6 @@ const parser = function (text) {
   return args;
 };
 
-const afterAppending = function (error) {
-  if (error) { throw error; }
-  console.log("Saved");
-};
-
-const readBody = function (req, res) {
-  let content = "";
-  req.on("data", (chunk) => { content += chunk; });
-  req.on("end", () => {
-    const parsedArgs = parser(content);
-    if (Object.keys(parsedArgs).length > 0) {
-      const comments = JSON.stringify(parsedArgs);
-      fs.appendFileSync("./public/comments.txt", comments, afterAppending);
-    }
-  });
-};
-
-
-
 const app = function (req, res) {
   const errorMessage = "Invalid request";
   const defaultFilePath = "./public/index.html";
@@ -51,7 +35,6 @@ const app = function (req, res) {
   if (req.url === "/") {
     filePath = defaultFilePath;
   }
-  readBody(req, res);
 
   fs.readFile(filePath, function (error, data) {
     if (!error) {
