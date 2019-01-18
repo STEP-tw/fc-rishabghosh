@@ -19,7 +19,7 @@ const parser = function (text) {
     const parts = keyValue.split("=");
     const key = parts[0];
     const value = parts[1];
-    args[key] = value;
+    if (key && value) args[key] = value;
   });
   return args;
 };
@@ -33,8 +33,11 @@ const readBody = function (req, res) {
   let content = "";
   req.on("data", (chunk) => { content += chunk; });
   req.on("end", () => {
-    const comments = JSON.stringify(parser(content));
-    fs.appendFileSync("./public/comments.txt", comments, afterAppending);
+    const parsedArgs = parser(content);
+    if (Object.keys(parsedArgs).length > 0) {
+      const comments = JSON.stringify(parsedArgs);
+      fs.appendFileSync("./public/comments.txt", comments, afterAppending);
+    }
   });
 };
 
