@@ -39,7 +39,6 @@ const getFilePath = function (url) {
 
 const serveFiles = function (req, res) {
   const filePath = getFilePath(req.url);
-
   fs.readFile(filePath, function (error, data) {
     if (!error) {
       sendData(req, res, data);
@@ -58,8 +57,19 @@ const logRequest = function (req, res) {
   console.log("\n ------ END ------- \n");
 };
 
-const app = function (req, res) {
+const readBody = function(req, res){
+  let content = "";
+  res.statusCode = 200;
+  req.on("data", (chunk) => content += chunk);
+  req.on("end", () => {
+    const parsedArgs = JSON.stringify(parser(content));
+    const message = "data given is -> " + parsedArgs;
+    res.write(message);
+    res.end();
+  });
+};
 
+const app = function (req, res) {
   const webFramework = new WebFramework();
   webFramework.use(logRequest);
   webFramework.get("/", serveFiles);
@@ -70,6 +80,7 @@ const app = function (req, res) {
   webFramework.get("/guest_book.html", serveFiles);
   webFramework.get("/style/guest_book.css", serveFiles);
   webFramework.get("/javascript/guestBook.js", serveFiles);
+  webFramework.post("/guest_book.html", readBody);
   
   webFramework.error(throwError);
   webFramework.handleRequest(req, res);
