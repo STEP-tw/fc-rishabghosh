@@ -57,17 +57,44 @@ const logRequest = function (req, res) {
   console.log("\n ------ END ------- \n");
 };
 
-const readBody = function(req, res){
+const guestBook = function () {
+  return fs.readFileSync("./public/guest_book.html", "utf8");
+};
+
+let comments = [];
+
+
+const generateCommentTable = function (comment) {
+  let table = "<table id='comment'>";
+  let tr = comment.map(comment => {
+    return `<tr><td>${comment.name}</td><td>${comment.comment}</td></tr>`;
+  });
+  return table + tr.join("") + "</table>";
+};
+
+
+
+const readBody = function (req, res) {
   let content = "";
   res.statusCode = 200;
   req.on("data", (chunk) => content += chunk);
   req.on("end", () => {
-    const parsedArgs = JSON.stringify(parser(content));
-    const message = "data given is -> " + parsedArgs;
+    //const parsedArgs = JSON.stringify(parser(content));
+    const parsedArgs = parser(content);
+    comments.push(parsedArgs);
+
+    const table = generateCommentTable(comments);
+
+    const message = guestBook().replace(
+      `<div id="comments"></div>`,
+      `<div id="comments">${table}</div>`
+    );
     res.write(message);
     res.end();
   });
 };
+
+
 
 const app = function (req, res) {
   const webFramework = new WebFramework();
@@ -80,8 +107,8 @@ const app = function (req, res) {
   webFramework.get("/guest_book.html", serveFiles);
   webFramework.get("/style/guest_book.css", serveFiles);
   webFramework.get("/javascript/guestBook.js", serveFiles);
-  webFramework.post("/guest_book.html", readBody);
   
+  webFramework.post("/guest_book.html", readBody);
   webFramework.error(throwError);
   webFramework.handleRequest(req, res);
 };
