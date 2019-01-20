@@ -1,7 +1,11 @@
 const fs = require("fs");
-const WebFramework = require("./handler.js");
-const webFramework = new WebFramework();
 
+const WebFramework = require("./handler.js");
+
+const {
+  ERROR_MESSAGE,
+  DEFAULT_FILE_PATH,
+} = require("./constants.js");
 
 const sendData = function (req, res, data) {
   res.statusCode = 200;
@@ -27,22 +31,26 @@ const parser = function (text) {
   return args;
 };
 
-const app = function (req, res) {
-  const errorMessage = "Invalid request";
-  const defaultFilePath = "./public/index.html";
-  let filePath = "./public" + req.url;
+//should be in util
+const getFilePath = function (url) {
+  let filePath = "./public" + url;
+  if (url === "/") { filePath = DEFAULT_FILE_PATH; }
+  return filePath;
+};
 
-  if (req.url === "/") {
-    filePath = defaultFilePath;
-  }
-
+const serveFile = function (req, res) {
+  const filePath = getFilePath(req.url);
   fs.readFile(filePath, function (error, data) {
     if (!error) {
       sendData(req, res, data);
       return;
     }
-    throwError(req, res, errorMessage);
+    throwError(req, res, ERROR_MESSAGE);
   });
+};
+
+const app = function (req, res) {
+  serveFile(req, res);
 };
 
 // Export a function that can act as a handler
