@@ -7,6 +7,13 @@ const {
   DEFAULT_FILE_PATH,
 } = require("./constants.js");
 
+const getInitialComments = function(){
+  const initialComments = fs.readFileSync("./dataBase/comments.json", "utf8");
+  return JSON.parse(initialComments);
+};
+
+let INITIAL_COMMENTS = getInitialComments();
+
 const sendData = function (req, res, data) {
   res.statusCode = 200;
   res.write(data);
@@ -15,7 +22,7 @@ const sendData = function (req, res, data) {
 
 const throwError = function (req, res, errorMessage) {
   res.statusCode = 404;
-  res.write("invalid req");
+  res.write(ERROR_MESSAGE);
   res.end();
 };
 
@@ -44,7 +51,7 @@ const serveFiles = function (req, res) {
       sendData(req, res, data);
       return;
     }
-    throwError(req, res, "invalid req");
+    throwError(req, res, ERROR_MESSAGE);
   });
 };
 
@@ -61,9 +68,6 @@ const guestBook = function () {
   return fs.readFileSync("./public/guest_book.html", "utf8");
 };
 
-let comments = [];
-
-
 const generateCommentTable = function (comment) {
   let table = "<table id='comment'>";
   let tr = comment.map(comment => {
@@ -79,22 +83,37 @@ const readBody = function (req, res) {
   res.statusCode = 200;
   req.on("data", (chunk) => content += chunk);
   req.on("end", () => {
-    //const parsedArgs = JSON.stringify(parser(content));
     const parsedArgs = parser(content);
-    comments.push(parsedArgs);
+    INITIAL_COMMENTS.push(parsedArgs);
+    fs.writeFile("./dataBase/comments.json", JSON.stringify(INITIAL_COMMENTS),
+      function (error) {
+        if (error) { console.error(error); return; }
+        const table = generateCommentTable(INITIAL_COMMENTS);
 
-    const table = generateCommentTable(comments);
-
-    const message = guestBook().replace(
-      `<div id="comments"></div>`,
-      `<div id="comments">${table}</div>`
-    );
-    res.write(message);
-    res.end();
+        const message = guestBook().replace(
+          "<div id=\"comments\"></div>",
+          `<div id="comments">${table}</div>`
+        );
+        res.write(message);
+        res.end();
+      });
   });
 };
 
+const renderGuestBook = function (req, res) {
+  fs.readFile("./dataBase/comments.json", function (error, data) {
+    if (error) { throwError(req, res, ERROR_MESSAGE); return; }
+    const commentData = JSON.parse(data);
 
+    fs.readFile("./public/guest_book.html", function (error, data) {
+      if (error) { throwError(req, res, ERROR_MESSAGE); return; }
+      const htmlData = data;
+      const totalData = htmlData + generateCommentTable(commentData);
+
+      sendData(req, res, totalData);
+    });
+  });
+};
 
 const app = function (req, res) {
   const webFramework = new WebFramework();
@@ -104,10 +123,10 @@ const app = function (req, res) {
   webFramework.get("/javascript/landingPage.js", serveFiles);
   webFramework.get("/images/freshorigins.jpg", serveFiles);
   webFramework.get("/images/animated-flower.gif", serveFiles);
-  webFramework.get("/guest_book.html", serveFiles);
+  webFramework.get("/guest_book.html", renderGuestBook);
   webFramework.get("/style/guest_book.css", serveFiles);
   webFramework.get("/javascript/guestBook.js", serveFiles);
-  
+
   webFramework.post("/guest_book.html", readBody);
   webFramework.error(throwError);
   webFramework.handleRequest(req, res);

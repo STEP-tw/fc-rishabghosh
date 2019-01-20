@@ -1,6 +1,5 @@
 *** app.js ***
  * sendData and throwError can be one function -> send
- * const errorMessage could be in constants.js file
 
  ***** features *****
     *  Centred title at top
@@ -9,12 +8,11 @@
     *  Submit button, which takes the comment
     *  A list of comments by different guest until now with Date-time, Name and * *  Comment of each ordered with latest comment in reverse chronological order.
 
-***** implimenting ******
-   *  the form data is send to same url -> guest/guest_book.html
-   *  req.on("data", callback) gives the data send to the server
-   *  parse the data to key value pair
-   *  the data(name, comment) is stored locally, to database
-   *  the database should not be public
+***** Refactoring ******
+   * string literals should be in constants
+   * read-body -> fs.writeFile args should be put in a variable
+   * read-body -> use append instead of replace to inject tables
+   * 
 
 
 ***** suggestions *****
