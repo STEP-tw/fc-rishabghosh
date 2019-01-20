@@ -16,10 +16,6 @@
    *  the data(name, comment) is stored locally, to database
    *  the database should not be public
 
-   ** need funcitons to handle 
-
-
-
 
 ***** suggestions *****
    * use labels when necessary (like forms) instead of headings or paragraphs

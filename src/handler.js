@@ -1,3 +1,5 @@
+//constants -> method, url, GET, POST
+
 const hasOnlyHandler = function (req, route) {
   return !(route.hasOwnProperty("method") && route.hasOwnProperty("url"));
 };
@@ -11,6 +13,7 @@ class WebFramework {
   constructor() {
     this.routes = [];
     this.middlewareCount = 0;
+    this.middlewareCount;
   }
 
   use(handler) {
@@ -32,10 +35,12 @@ class WebFramework {
 
   handleRequest(req, res) {
     const matchingRoutes = this.routes.filter(isMatching.bind(null, req));
-    matchingRoutes.forEach(route => route.handler(req, res));
+    
     if (matchingRoutes.length === this.middlewareCount) {
       this.errorHandler(req, res);
     }
+    
+    matchingRoutes.forEach(route => route.handler(req, res));
     return;
   }
 }
