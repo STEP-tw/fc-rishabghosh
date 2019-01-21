@@ -72,7 +72,7 @@ const logRequest = function (req, res, next) {
   console.log("requested method ->", req.method);
   console.log("requested url -> ", req.url);
   console.log("headers =>", JSON.stringify(req.headers, null, 2));
-  //console.log("body ->", req.body);
+  console.log("body ->", req.body);
   console.log("\n ------ END ------- \n");
   next();
 };
@@ -120,8 +120,8 @@ const writeNewComment = function (req, res) {
 
 const app = function (req, res) {
   const webFramework = new WebFramework();
-  webFramework.use(logRequest);
   webFramework.use(readBody);
+  webFramework.use(logRequest);
   webFramework.get("/guest_book.html", renderGuestBook);
   webFramework.post("/guest_book.html", writeNewComment);
   webFramework.use(serveFiles);

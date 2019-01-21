@@ -12,13 +12,10 @@ const isMatching = function (req, route) {
 class WebFramework {
   constructor() {
     this.routes = [];
-    this.middlewareCount = 0;
-    this.middlewareCount;
   }
 
   use(handler) {
     this.routes.push({ handler });
-    this.middlewareCount++;
   }
 
   get(url, handler) {
@@ -40,12 +37,10 @@ class WebFramework {
 
     const next = function () {
       if (remainingRoutes.length === 0) return;
-      remainingRoutes.shift();
-      remainingRoutes[0].handler(req, res, next);
+      const current  = remainingRoutes.shift();
+      current.handler(req, res, next);
     };
-    
     next();
-
   }
 }
 
