@@ -5,8 +5,8 @@ const WebFramework = require("./handler.js");
 const {
   ERROR_MESSAGE,
   DEFAULT_FILE_PATH,
-  COMMENT_FILE_PATH,
-  GUEST_BOOK_FILE_PATH,
+  COMMENT_FILE,
+  GUEST_BOOK_FILE,
   UTF8,
   EQUAL_TO,
   AND,
@@ -15,7 +15,7 @@ const {
 
 
 const getInitialComments = function () {
-  const initialComments = fs.readFileSync(COMMENT_FILE_PATH, UTF8);
+  const initialComments = fs.readFileSync(COMMENT_FILE, UTF8);
   return JSON.parse(initialComments);
 };
 
@@ -73,7 +73,7 @@ const logRequest = function (req, res) {
 };
 
 const guestBook = function () {
-  return fs.readFileSync(GUEST_BOOK_FILE_PATH, UTF8);
+  return fs.readFileSync(GUEST_BOOK_FILE, UTF8);
 };
 
 const generateCommentTable = function (comment) {
@@ -94,28 +94,24 @@ const readBody = function (req, res) {
 
     const parsedArgs = parser(content);
     INITIAL_COMMENTS.push(parsedArgs);
+    const comments = JSON.stringify(INITIAL_COMMENTS);
 
-    fs.writeFile(COMMENT_FILE_PATH, JSON.stringify(INITIAL_COMMENTS),
-      function (error) {
-        if (error) { console.error(error); return; }
-        const table = generateCommentTable(INITIAL_COMMENTS);
-
-        const message = guestBook().replace(
-          "<div id=\"comments\"></div>",
-          `<div id="comments">${table}</div>`
-        );
-        res.write(message);
-        res.end();
-      });
+    fs.writeFile(COMMENT_FILE, comments, function (error) {
+      if (error) { console.error(error); return; }
+      const table = generateCommentTable(INITIAL_COMMENTS);
+      const message = guestBook() + table;
+      res.write(message);
+      res.end();
+    });
   });
 };
 
 const renderGuestBook = function (req, res) {
-  fs.readFile(COMMENT_FILE_PATH, function (error, data) {
+  fs.readFile(COMMENT_FILE, function (error, data) {
     if (error) { throwError(req, res, ERROR_MESSAGE); return; }
     const commentData = JSON.parse(data);
 
-    fs.readFile(GUEST_BOOK_FILE_PATH, function (error, data) {
+    fs.readFile(GUEST_BOOK_FILE, function (error, data) {
       if (error) { throwError(req, res, ERROR_MESSAGE); return; }
       const htmlData = data;
       const totalData = htmlData + generateCommentTable(commentData);
