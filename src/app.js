@@ -19,8 +19,12 @@ const getInitialComments = function () {
   return JSON.parse(initialComments);
 };
 
-let INITIAL_COMMENTS = getInitialComments();
+const getGuestBook = function () {
+  return fs.readFileSync(GUEST_BOOK_FILE, UTF8);
+};
 
+let INITIAL_COMMENTS = getInitialComments();
+const GUEST_BOOK = getGuestBook();
 
 const sendData = function (req, res, data) {
   res.statusCode = 200;
@@ -30,7 +34,7 @@ const sendData = function (req, res, data) {
 
 const throwError = function (req, res, errorMessage) {
   res.statusCode = 404;
-  res.write(ERROR_MESSAGE);
+  res.write(errorMessage);
   res.end();
 };
 
@@ -73,9 +77,16 @@ const logRequest = function (req, res, next) {
   next();
 };
 
-const guestBook = function () {
-  return fs.readFileSync(GUEST_BOOK_FILE, UTF8);
+const readBody = function (req, res, next) {
+  let content = EMPTY_STRING;
+  res.statusCode = 200;
+  req.on("data", (chunk) => content += chunk);
+  req.on("end", () => {
+    req.body = content;
+    next();
+  });
 };
+
 
 const generateCommentTable = function (comment) {
   let table = "<table id='comment'>";
@@ -86,43 +97,33 @@ const generateCommentTable = function (comment) {
 };
 
 
-const readBody = function (req, res) {
-  let content = EMPTY_STRING;
-  res.statusCode = 200;
-  req.on("data", (chunk) => content += chunk);
-  req.on("end", () => {
-
-    const parsedArgs = parser(content);
-    INITIAL_COMMENTS.push(parsedArgs);
-    const comments = JSON.stringify(INITIAL_COMMENTS);
-
-    fs.writeFile(COMMENT_FILE, comments, function (error) {
-      if (error) { console.error(error); return; }
-      const table = generateCommentTable(INITIAL_COMMENTS);
-      const message = guestBook() + table;
-      res.write(message);
-      res.end();
-    });
-  });
-};
-
 const renderGuestBook = function (req, res) {
-
   fs.readFile(GUEST_BOOK_FILE, function (error, data) {
     if (error) { throwError(req, res, ERROR_MESSAGE); return; }
     const htmlData = data;
     const totalData = htmlData + generateCommentTable(INITIAL_COMMENTS);
-
     sendData(req, res, totalData);
   });
 };
 
+
+
+const writeNewComment = function (req, res) {
+  const parsedArgs = parser(req.body);
+  INITIAL_COMMENTS.push(parsedArgs);
+  const comments = JSON.stringify(INITIAL_COMMENTS);
+  renderGuestBook(req, res);
+  fs.writeFile(COMMENT_FILE, comments, (error) => { console.error(error); });
+};
+
+
+
 const app = function (req, res) {
   const webFramework = new WebFramework();
   webFramework.use(logRequest);
-  webFramework.use(logRequest);
+  webFramework.use(readBody);
   webFramework.get("/guest_book.html", renderGuestBook);
-  webFramework.post("/guest_book.html", readBody);
+  webFramework.post("/guest_book.html", writeNewComment);
   webFramework.use(serveFiles);
   webFramework.error(throwError);
   webFramework.handleRequest(req, res);
