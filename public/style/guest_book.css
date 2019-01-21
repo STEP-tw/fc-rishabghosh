@@ -35,8 +35,16 @@ input {
 }
 
 #comments {
+
   border-top: 1px solid black;
   font-size: 25px;
   position: relative;
   padding: 20px;
 }
+
+td {
+  text-align: center;
+  width: 300px;
+  border: 1px solid black;
+}
+

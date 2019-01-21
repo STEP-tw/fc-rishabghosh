@@ -7,6 +7,7 @@ const {
   DEFAULT_FILE_PATH,
   COMMENT_FILE,
   GUEST_BOOK_FILE,
+  PLACEHOLDER,
   UTF8,
   EQUAL_TO,
   AND,
@@ -19,12 +20,7 @@ const getInitialComments = function () {
   return JSON.parse(initialComments);
 };
 
-const getGuestBook = function () {
-  return fs.readFileSync(GUEST_BOOK_FILE, UTF8);
-};
-
 let INITIAL_COMMENTS = getInitialComments();
-const GUEST_BOOK = getGuestBook();
 
 const sendData = function (req, res, data) {
   res.statusCode = 200;
@@ -87,26 +83,27 @@ const readBody = function (req, res, next) {
   });
 };
 
-
 const generateCommentTable = function (comment) {
-  let table = "<table id='comment'>";
-  let tr = comment.map(comment => {
-    return `<tr><td>${comment.name}</td><td>${comment.comment}</td></tr>`;
-  });
-  return table + tr.join("") + "</table>";
+  console.log(comment);
+  return comment.map(comment => {
+    return `
+    <tr>
+      <td>date to be inserted</td>
+      <td>${comment.name}</td>
+      <td>${comment.comment}</td>
+    </tr>`;
+  }).join("");
 };
-
 
 const renderGuestBook = function (req, res) {
   fs.readFile(GUEST_BOOK_FILE, function (error, data) {
     if (error) { throwError(req, res, ERROR_MESSAGE); return; }
-    const htmlData = data;
-    const totalData = htmlData + generateCommentTable(INITIAL_COMMENTS);
-    sendData(req, res, totalData);
+    const initialHtml = data.toString();
+    const table =  generateCommentTable(INITIAL_COMMENTS);
+    const message = initialHtml.replace(PLACEHOLDER, table);
+    sendData(req, res, message);
   });
 };
-
-
 
 const writeNewComment = function (req, res) {
   const parsedArgs = parser(req.body);
@@ -115,8 +112,6 @@ const writeNewComment = function (req, res) {
   renderGuestBook(req, res);
   fs.writeFile(COMMENT_FILE, comments, (error) => { console.error(error); });
 };
-
-
 
 const app = function (req, res) {
   const webFramework = new WebFramework();
@@ -129,6 +124,5 @@ const app = function (req, res) {
   webFramework.handleRequest(req, res);
 };
 
-// Export a function that can act as a handler
 
 module.exports = app;

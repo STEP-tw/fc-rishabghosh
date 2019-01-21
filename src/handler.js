@@ -36,8 +36,8 @@ class WebFramework {
     const remainingRoutes = [...matchingRoutes];
 
     const next = function () {
-      if (remainingRoutes.length === 0) return;
       const current  = remainingRoutes.shift();
+      if (remainingRoutes.length === 0) return;
       current.handler(req, res, next);
     };
     next();
