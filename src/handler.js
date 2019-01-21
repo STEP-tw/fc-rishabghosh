@@ -30,18 +30,22 @@ class WebFramework {
   }
 
   error(handler) {
-    this.errorHandler = handler;
+    this.errorHandler = { handler };
   }
 
   handleRequest(req, res) {
     const matchingRoutes = this.routes.filter(isMatching.bind(null, req));
+    matchingRoutes.push(this.errorHandler);
+    const remainingRoutes = [...matchingRoutes];
+
+    const next = function () {
+      if (remainingRoutes.length === 0) return;
+      remainingRoutes.shift();
+      remainingRoutes[0].handler(req, res, next);
+    };
     
-    if (matchingRoutes.length === this.middlewareCount) {
-      this.errorHandler(req, res);
-    }
-    
-    matchingRoutes.forEach(route => route.handler(req, res));
-    return;
+    next();
+
   }
 }
 

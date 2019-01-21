@@ -63,13 +63,14 @@ const serveFiles = function (req, res) {
   });
 };
 
-const logRequest = function (req, res) {
+const logRequest = function (req, res, next) {
   console.log("\n------ LOGS -------\n");
   console.log("requested method ->", req.method);
   console.log("requested url -> ", req.url);
   console.log("headers =>", JSON.stringify(req.headers, null, 2));
   //console.log("body ->", req.body);
   console.log("\n ------ END ------- \n");
+  next();
 };
 
 const guestBook = function () {
@@ -83,7 +84,6 @@ const generateCommentTable = function (comment) {
   });
   return table + tr.join("") + "</table>";
 };
-
 
 
 const readBody = function (req, res) {
@@ -124,16 +124,10 @@ const renderGuestBook = function (req, res) {
 const app = function (req, res) {
   const webFramework = new WebFramework();
   webFramework.use(logRequest);
-  webFramework.get("/", serveFiles);
-  webFramework.get("/style/landing_page.css", serveFiles);
-  webFramework.get("/javascript/landingPage.js", serveFiles);
-  webFramework.get("/images/freshorigins.jpg", serveFiles);
-  webFramework.get("/images/animated-flower.gif", serveFiles);
+  webFramework.use(logRequest);
   webFramework.get("/guest_book.html", renderGuestBook);
-  webFramework.get("/style/guest_book.css", serveFiles);
-  webFramework.get("/javascript/guestBook.js", serveFiles);
-
   webFramework.post("/guest_book.html", readBody);
+  webFramework.use(serveFiles);
   webFramework.error(throwError);
   webFramework.handleRequest(req, res);
 };
