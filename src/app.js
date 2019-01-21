@@ -5,14 +5,22 @@ const WebFramework = require("./handler.js");
 const {
   ERROR_MESSAGE,
   DEFAULT_FILE_PATH,
+  COMMENT_FILE_PATH,
+  GUEST_BOOK_FILE_PATH,
+  UTF8,
+  EQUAL_TO,
+  AND,
+  EMPTY_STRING
 } = require("./constants.js");
 
-const getInitialComments = function(){
-  const initialComments = fs.readFileSync("./dataBase/comments.json", "utf8");
+
+const getInitialComments = function () {
+  const initialComments = fs.readFileSync(COMMENT_FILE_PATH, UTF8);
   return JSON.parse(initialComments);
 };
 
 let INITIAL_COMMENTS = getInitialComments();
+
 
 const sendData = function (req, res, data) {
   res.statusCode = 200;
@@ -27,10 +35,10 @@ const throwError = function (req, res, errorMessage) {
 };
 
 const parser = function (text) {
-  const eachPair = text.split("&"); //each key-val pair
+  const eachPair = text.split(AND); //each key-val pair
   const args = {};
   eachPair.forEach(keyValue => {
-    const parts = keyValue.split("=");
+    const parts = keyValue.split(EQUAL_TO);
     const key = parts[0];
     const value = parts[1];
     if (key && value) args[key] = value;
@@ -65,7 +73,7 @@ const logRequest = function (req, res) {
 };
 
 const guestBook = function () {
-  return fs.readFileSync("./public/guest_book.html", "utf8");
+  return fs.readFileSync(GUEST_BOOK_FILE_PATH, UTF8);
 };
 
 const generateCommentTable = function (comment) {
@@ -79,13 +87,15 @@ const generateCommentTable = function (comment) {
 
 
 const readBody = function (req, res) {
-  let content = "";
+  let content = EMPTY_STRING;
   res.statusCode = 200;
   req.on("data", (chunk) => content += chunk);
   req.on("end", () => {
+
     const parsedArgs = parser(content);
     INITIAL_COMMENTS.push(parsedArgs);
-    fs.writeFile("./dataBase/comments.json", JSON.stringify(INITIAL_COMMENTS),
+
+    fs.writeFile(COMMENT_FILE_PATH, JSON.stringify(INITIAL_COMMENTS),
       function (error) {
         if (error) { console.error(error); return; }
         const table = generateCommentTable(INITIAL_COMMENTS);
@@ -101,11 +111,11 @@ const readBody = function (req, res) {
 };
 
 const renderGuestBook = function (req, res) {
-  fs.readFile("./dataBase/comments.json", function (error, data) {
+  fs.readFile(COMMENT_FILE_PATH, function (error, data) {
     if (error) { throwError(req, res, ERROR_MESSAGE); return; }
     const commentData = JSON.parse(data);
 
-    fs.readFile("./public/guest_book.html", function (error, data) {
+    fs.readFile(GUEST_BOOK_FILE_PATH, function (error, data) {
       if (error) { throwError(req, res, ERROR_MESSAGE); return; }
       const htmlData = data;
       const totalData = htmlData + generateCommentTable(commentData);

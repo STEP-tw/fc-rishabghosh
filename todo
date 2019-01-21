@@ -12,7 +12,7 @@
    * string literals should be in constants
    * read-body -> fs.writeFile args should be put in a variable
    * read-body -> use append instead of replace to inject tables
-   * 
+   * parse could be better with array destructure
 
 
 ***** suggestions *****
