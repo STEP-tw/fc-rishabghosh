@@ -107,17 +107,13 @@ const readBody = function (req, res) {
 };
 
 const renderGuestBook = function (req, res) {
-  fs.readFile(COMMENT_FILE, function (error, data) {
+
+  fs.readFile(GUEST_BOOK_FILE, function (error, data) {
     if (error) { throwError(req, res, ERROR_MESSAGE); return; }
-    const commentData = JSON.parse(data);
+    const htmlData = data;
+    const totalData = htmlData + generateCommentTable(INITIAL_COMMENTS);
 
-    fs.readFile(GUEST_BOOK_FILE, function (error, data) {
-      if (error) { throwError(req, res, ERROR_MESSAGE); return; }
-      const htmlData = data;
-      const totalData = htmlData + generateCommentTable(commentData);
-
-      sendData(req, res, totalData);
-    });
+    sendData(req, res, totalData);
   });
 };
 
