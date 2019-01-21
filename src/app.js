@@ -83,23 +83,31 @@ const readBody = function (req, res, next) {
   });
 };
 
-const generateCommentTable = function (comment) {
-  console.log(comment);
-  return comment.map(comment => {
+const insertTime = function (sourceObject) {
+  const date = new Date();
+  sourceObject["date"] = date;
+  return sourceObject;
+};
+
+const generateCommentTable = function (comments) {
+  return comments.map(comment => {
+    const date = new Date(comment.date).toLocaleString();
     return `
     <tr>
-      <td>date to be inserted</td>
+      <td>${date}</td>
       <td>${comment.name}</td>
       <td>${comment.comment}</td>
     </tr>`;
   }).join("");
 };
 
+
+
 const renderGuestBook = function (req, res) {
   fs.readFile(GUEST_BOOK_FILE, function (error, data) {
     if (error) { throwError(req, res, ERROR_MESSAGE); return; }
     const initialHtml = data.toString();
-    const table =  generateCommentTable(INITIAL_COMMENTS);
+    const table = generateCommentTable(INITIAL_COMMENTS);
     const message = initialHtml.replace(PLACEHOLDER, table);
     sendData(req, res, message);
   });
@@ -107,10 +115,11 @@ const renderGuestBook = function (req, res) {
 
 const writeNewComment = function (req, res) {
   const parsedArgs = parser(req.body);
-  INITIAL_COMMENTS.push(parsedArgs);
-  const comments = JSON.stringify(INITIAL_COMMENTS);
+  const commentWithDate = insertTime(parsedArgs);
+  INITIAL_COMMENTS.push(commentWithDate);
   renderGuestBook(req, res);
-  fs.writeFile(COMMENT_FILE, comments, (error) => { console.error(error); });
+  const commentsToWrite = JSON.stringify(INITIAL_COMMENTS);
+  fs.writeFile(COMMENT_FILE, commentsToWrite, (error) => console.error(error));
 };
 
 const app = function (req, res) {
