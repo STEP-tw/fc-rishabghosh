@@ -116,7 +116,7 @@ const renderGuestBook = function (req, res) {
 const writeNewComment = function (req, res) {
   const parsedArgs = parser(req.body);
   const commentWithDate = insertTime(parsedArgs);
-  INITIAL_COMMENTS.push(commentWithDate);
+  INITIAL_COMMENTS.unshift(commentWithDate);
   renderGuestBook(req, res);
   const commentsToWrite = JSON.stringify(INITIAL_COMMENTS);
   fs.writeFile(COMMENT_FILE, commentsToWrite, (error) => console.error(error));

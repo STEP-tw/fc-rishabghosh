@@ -48,3 +48,7 @@ td {
   border: 1px solid black;
 }
 
+#refresh {
+  cursor: pointer;
+  color: green;
+}
