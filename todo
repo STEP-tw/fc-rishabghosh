@@ -5,19 +5,14 @@
    ** req -2 
       *  parse could be better with array destructure
       *  rendering home should be done by a differnet function
+   ** req - 6
+      *  remove dublications from guestBook.js
+      *  put innerHtml in a variable
+      *  how to stop using setInterval
+      *  
 
 
 ***** suggestions *****
    ** req-2
       * use labels when necessary (like forms) instead of headings or paragraphs
       * name  webframework could be comment handler
-
- ***** features *****
-   *  Image on left
-   *  Centred title at top
-   *  A link to go back to home page
-   *  Formatted Content on the right of the image with information on the flower.
-   *  A link to download the content as pdf.
-
-
-

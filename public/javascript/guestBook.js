@@ -1,33 +1,41 @@
 /* global document, window, fetch, DOMParser */
 /* eslint no-unused-vars: 0 */
 
-const refreshComments = function () {
-  fetch("/guest_book.html").then(function (request) {
+const getDate = () => new Date().toLocaleString();
+const fetchText = (request) => request.text();
+const getCommentsDivOf = (doc) => doc.getElementById("comments");
+const getRefreshButton = (doc) => doc.getElementById("refresh");
 
-    const htmlAsText = request.text();
-    return htmlAsText;
-
-  }).then(function (response) {
-
-    const parser = new DOMParser();
-    const htmlDoc = parser.parseFromString(response, "text/html");
-    const commentDiv = htmlDoc.getElementById("comments");
-    return commentDiv;
-
-  }).then(function (commentDiv) {
-    document.getElementById("comments").innerHTML = commentDiv.innerHTML +
-      `<div>
-         Last reloaded on :  ${getDate()}
-       </div>`;
-  });
+const convertTextToHtml = function (source) {
+  const parser = new DOMParser();
+  return parser.parseFromString(source, "text/html");
 };
 
-const getDate = () => new Date().toLocaleString();
+const createDateDiv = function () {
+  const date = getDate();
+  const div = "<div>" +
+    "Last refreshed on: " + date +
+    "</div>";
+  return div;
+};
+
+const replaceComments = function (fetchedHtml) {
+  const currentComments = getCommentsDivOf(fetchedHtml);
+  const oldComments = getCommentsDivOf(document);
+  const dateDiv = createDateDiv();
+  oldComments.innerHTML = currentComments.innerHTML + dateDiv;
+};
+
+
+const refreshComments = function () {
+  fetch("/guest_book.html")
+    .then(fetchText)
+    .then(convertTextToHtml)
+    .then(replaceComments);
+};
 
 const setEventListner = function () {
-  setInterval(() => {
-    document.getElementById("refresh").onclick = refreshComments;
-  }, 10);
+  setInterval(() => getRefreshButton(document).onclick = refreshComments, 10);
 };
 
 
