@@ -34,6 +34,10 @@ const throwError = function (req, res, errorMessage) {
   res.end();
 };
 
+const replacePlusToSpace = function (sourceString) {
+  return sourceString.replace(/\+/g, " ");
+};
+
 const parser = function (text) {
   const eachPair = text.split(AND); //each key-val pair
   const args = {};
@@ -41,7 +45,11 @@ const parser = function (text) {
     const parts = keyValue.split(EQUAL_TO);
     const key = parts[0];
     const value = parts[1];
-    if (key && value) args[key] = value;
+    if (key && value) {
+      const newKey = replacePlusToSpace(key);
+      const newValue = replacePlusToSpace(value);
+      args[newKey] = newValue;
+    }
   });
   return args;
 };
@@ -113,9 +121,12 @@ const renderGuestBook = function (req, res) {
   });
 };
 
+
+
 const writeNewComment = function (req, res) {
   const parsedArgs = parser(req.body);
   const commentWithDate = insertTime(parsedArgs);
+
   INITIAL_COMMENTS.unshift(commentWithDate);
   renderGuestBook(req, res);
   const commentsToWrite = JSON.stringify(INITIAL_COMMENTS);
