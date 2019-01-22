@@ -1,22 +1,23 @@
 *** app.js ***
  * sendData and throwError can be one function -> send
 
- ***** features *****
-    *  Centred title at top
-    *  A link to go back to home page
-    *  Text fields to take name & a comment.
-    *  Submit button, which takes the comment
-    *  A list of comments by different guest until now with Date-time, Name and * *  Comment of each ordered with latest comment in reverse chronological order.
-
-***** Refactoring ******
-   * string literals should be in constants
-   * read-body -> fs.writeFile args should be put in a variable
-   * read-body -> use append instead of replace to inject tables
-   * parse could be better with array destructure
-   * use .template.html
+ ***** Refactoring ******
+   ** req -2 
+      *  parse could be better with array destructure
+      *  rendering home should be done by a differnet function
 
 
 ***** suggestions *****
-   * use labels when necessary (like forms) instead of headings or paragraphs
+   ** req-2
+      * use labels when necessary (like forms) instead of headings or paragraphs
+      * name  webframework could be comment handler
+
+ ***** features *****
+   *  Image on left
+   *  Centred title at top
+   *  A link to go back to home page
+   *  Formatted Content on the right of the image with information on the flower.
+   *  A link to download the content as pdf.
+
 
 

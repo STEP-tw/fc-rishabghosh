@@ -1,8 +1,14 @@
+h1 {
+  text-align: center;
+	color: #b77900;
+	border-bottom: 1px solid black;
+	padding-bottom: 10px;
+}
+
 .container {
   display: flex;
   margin: 20px;
 }
-
 .aside {
   font-size: 23px;
   line-height: 40px;
@@ -11,19 +17,14 @@
 
 .main_img {
   border: 1px solid black;
-  width: 60%;
-  height: 60%;
+  width: 30%;
+  height: 30%;
 }
 
 .visible {
-  visibility: visible;
+	visibility: visible;
 }
 
 .invisible {
-  visibility: hidden;
-}
-
-h1 {
-  text-align: center;
-  color: #b77900;
+	visibility: hidden;
 }
