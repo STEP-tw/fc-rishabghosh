@@ -7,6 +7,7 @@ const UTF8 = "utf8";
 const EQUAL_TO = "=";
 const AND = "&";
 const EMPTY_STRING = "";
+const SPACE = " ";
 
 
 module.exports = {
@@ -18,5 +19,6 @@ module.exports = {
   UTF8,
   EQUAL_TO,
   AND,
-  EMPTY_STRING
+  EMPTY_STRING,
+  SPACE,
 };

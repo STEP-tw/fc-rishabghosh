@@ -11,7 +11,8 @@ const {
   UTF8,
   EQUAL_TO,
   AND,
-  EMPTY_STRING
+  EMPTY_STRING,
+  SPACE
 } = require("./constants.js");
 
 
@@ -35,7 +36,7 @@ const throwError = function (req, res, errorMessage) {
 };
 
 const replacePlusToSpace = function (sourceString) {
-  return sourceString.replace(/\+/g, " ");
+  return sourceString.replace(/\+/g, SPACE);
 };
 
 const parser = function (text) {
@@ -100,15 +101,13 @@ const insertTime = function (sourceObject) {
 const generateCommentTable = function (comments) {
   return comments.map(comment => {
     const date = new Date(comment.date).toLocaleString();
-    return `
-    <tr>
-      <td>${date}</td>
-      <td>${comment.name}</td>
-      <td>${comment.comment}</td>
-    </tr>`;
+    return "<tr>" +
+      `<td>${date}</td>` +
+      `<td>${comment.name}</td>` +
+      `<td>${comment.comment}</td>` +
+      "</tr>";
   }).join("");
 };
-
 
 
 const renderGuestBook = function (req, res) {
