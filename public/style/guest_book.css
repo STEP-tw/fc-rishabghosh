@@ -12,30 +12,26 @@ form {
   font-size: 25px;
 }
 
-input {
-  margin: 20px;
-  font-size: 20px;
-}
 
 #comment_box {
-  margin-left: 50px;
+  margin-left: 20px;
   height: 100px;
   width: 400px;
 }
 
 #name_box {
-  margin-left: 50px;
   height: 30px;
-  margin-left: 90px;
+  margin-left: 60px;
   width: 400px;
 }
 
 #submit_button {
-  margin-left: 350px;
+  height: 90px;
+  width: 100px;
+  font-size: 25px;
+  cursor: pointer;
 }
-
 #comments {
-
   border-top: 1px solid black;
   font-size: 25px;
   position: relative;

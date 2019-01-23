@@ -12,9 +12,21 @@
   <h2>Leave a comment</h2>
 
   <form method="POST" action="/guest_book.html">
-    Name: <input id="name_box" name="name" required><br>
-    Comment: <input id="comment_box" name="comment" required><br>
-    <input id="submit_button" type="submit" onclick="showInput()"><br>
+
+    <p>
+      <span>Name:</span>
+      <input id="name_box" name="name" required>
+    </p>
+
+    <p>
+      <span>Comment:</span>
+      <input id="comment_box" name="comment" required>
+    </p>
+    
+    <p>
+      <input id="submit_button" type="submit">
+    </p>
+
   </form>
 
   <div id="comments">

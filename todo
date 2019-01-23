@@ -2,14 +2,22 @@
  * sendData and throwError can be one function -> send
 
  ***** Refactoring ******
-   ** req -2 
+   ** app.js 
       *  parse could be better with array destructure
       *  rendering home should be done by a differnet function
-   ** req - 6
-      *  remove dublications from guestBook.js
-      *  put innerHtml in a variable
+
+   ** guest_book.js
       *  how to stop using setInterval
-      *  
+
+   ** guest_book.html
+      *  paragraph tag instead of br?
+      *  using span
+      *  delete onclick=showInput form submit
+      *  change css styles also
+   
+   ** guest_book.css
+      *  style using class not id  
+      *  refactor styles
 
 
 ***** suggestions *****
