@@ -2,8 +2,6 @@ const fs = require("fs");
 const express = require("express");
 
 const {
-  ERROR_MESSAGE,
-  DEFAULT_FILE_PATH,
   COMMENT_FILE,
   GUEST_BOOK_FILE,
   PLACEHOLDER,
@@ -20,18 +18,6 @@ const getInitialComments = function() {
 };
 
 let INITIAL_COMMENTS = getInitialComments();
-
-const sendData = function(req, res, data) {
-  res.statusCode = 200;
-  res.write(data);
-  res.end();
-};
-
-const throwError = function(req, res, errorMessage) {
-  res.statusCode = 404;
-  res.write(errorMessage);
-  res.end();
-};
 
 const replacePlusToSpace = function(sourceString) {
   return sourceString.replace(/\+/g, SPACE);
@@ -96,14 +82,10 @@ const generateCommentTable = function(comments) {
 
 const renderGuestBook = function(req, res) {
   fs.readFile(GUEST_BOOK_FILE, function(error, data) {
-    if (error) {
-      throwError(req, res, ERROR_MESSAGE);
-      return;
-    }
     const initialHtml = data.toString();
     const table = generateCommentTable(INITIAL_COMMENTS);
     const message = initialHtml.replace(PLACEHOLDER, table);
-    sendData(req, res, message);
+    res.send(message);
   });
 };
 
