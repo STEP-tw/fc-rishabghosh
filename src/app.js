@@ -53,25 +53,6 @@ const parser = function(text) {
   return args;
 };
 
-const getFilePath = function(url) {
-  let filePath = "./public" + url;
-  if (url === "/") {
-    filePath = DEFAULT_FILE_PATH;
-  }
-  return filePath;
-};
-
-const serveFiles = function(req, res) {
-  const filePath = getFilePath(req.url);
-  fs.readFile(filePath, function(error, data) {
-    if (!error) {
-      sendData(req, res, data);
-      return;
-    }
-    throwError(req, res, ERROR_MESSAGE);
-  });
-};
-
 const logRequest = function(req, res, next) {
   console.log("\n------ LOGS -------\n");
   console.log("requested method ->", req.method);
@@ -141,8 +122,6 @@ app.use(readBody);
 app.use(logRequest);
 app.get("/guest_book.html", renderGuestBook);
 app.post("/guest_book.html", writeNewComment);
-app.use(serveFiles);
-// app.error(throwError);
-// app.handleRequest(req, res);
+app.use(express.static("public"));
 
 module.exports = app;
